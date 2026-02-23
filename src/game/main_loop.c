@@ -26,12 +26,14 @@ static void Render(void) {
     Game_TiledImage knight = {
         .tile_x = 0,
         .tile_y = 0,
-        .tilemap = Game_GetTileMap(0)
+        .tilemap = Game_GetTileMap(GAME_TILEMAP_KNIGHT)
     };
+
     Transform transform = {
         .position = { .x = 100, .y = 200 },
         .size = { .x = METER_FACTOR, .y = METER_FACTOR }
     };
+
     Game_RenderTiledImage(&knight, &transform);
     // END
 

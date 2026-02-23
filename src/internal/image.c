@@ -1,7 +1,7 @@
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_surface.h>
 #include "image.h"
 
-#define GAME_TILEMAPS_MAX 32
 static struct {
     Game_TileMap tilemaps[GAME_TILEMAPS_MAX];
     size_t count;
@@ -21,9 +21,22 @@ extern int Game_InitTileMaps(void) {
     return 0;
 }
 
-extern int Game_LoadTilemap(const char *path, int tile_width, int tile_height) {
-    if (Game_TileMapManager.count == GAME_TILEMAPS_MAX) {
-        Game_ThrowError("MAX TILEMAPS EXCEEDED");
+extern int Game_DestroyTileMap(size_t id) {
+    if (id >= GAME_TILEMAPS_MAX) {
+        Game_ThrowError("TILEMAP OUT OF BOUNDS");
+        return -1;
+    }
+
+    Game_TileMap *tilemap = &Game_TileMapManager.tilemaps[id];
+    SDL_FreeSurface(tilemap->surface);
+    tilemap->surface = NULL;
+
+    return 0;
+}
+
+extern int Game_LoadTilemap(size_t id, const char *path, int tile_width, int tile_height) {
+    if (id >= GAME_TILEMAPS_MAX) {
+        Game_ThrowError("TILEMAP OUT OF BOUNDS");
         return -1;
     }
 
@@ -34,12 +47,12 @@ extern int Game_LoadTilemap(const char *path, int tile_width, int tile_height) {
         .tile_height = tile_height,
     };
 
-    Game_TileMapManager.tilemaps[Game_TileMapManager.count++] = tilemap;
+    Game_TileMapManager.tilemaps[id] = tilemap;
     return 0;
 }
 
 extern Game_TileMap *Game_GetTileMap(size_t id) {
-    if (id >= Game_TileMapManager.count) {
+    if (id >= GAME_TILEMAPS_MAX) {
         Game_ThrowError("Tilemap access outside of bounds");
         return NULL;
     }

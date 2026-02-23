@@ -3,6 +3,8 @@
 #include "internals.h"
 #include "../math/transform.h"
 
+#define GAME_TILEMAPS_MAX 32
+
 typedef struct {
     SDL_Surface *surface;
     int tile_width;
@@ -15,16 +17,31 @@ typedef struct {
     int tile_y;
 } Game_TiledImage;
 
+enum {
+    GAME_TILEMAP_KNIGHT = 0
+};
+
+/**
+ * Load an image from a file.
+ * @param path
+ * @return An SDL_Surface created from the file.
+ */
 extern SDL_Surface *Game_LoadImage(const char *path);
 
-extern void Game_RenderImage(SDL_Surface *image, Transform *transform);
-
+/**
+ * Render an texture directly from a tilemap without needing to load
+ * that texture specifically.
+ * @param image
+ * @param transform
+ */
 extern void Game_RenderTiledImage(Game_TiledImage *image, Transform *transform);
 
 extern int Game_InitTileMaps(void);
 
+extern int Game_DestroyTileMap(size_t id);
+
 extern Game_TileMap *Game_GetTileMap(size_t id);
 
-extern int Game_LoadTilemap(const char *path, int tile_width, int tile_height);
+extern int Game_LoadTilemap(size_t id, const char *path, int tile_width, int tile_height);
 
 #endif //UNNAMED_GAME_IMAGE_H

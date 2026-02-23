@@ -39,8 +39,12 @@ int main(void) {
         goto cleanup;
     }
 
-    Game_LoadTilemap("../assets/png/knight.png", 32, 32);
+    Game_LoadTilemap(GAME_TILEMAP_KNIGHT, "../assets/png/knight.png", 32, 32);
     Game_MainLoop();
+
+    for (size_t id = 0; id < GAME_TILEMAPS_MAX; ++id) {
+        Game_DestroyTileMap(id);
+    }
 
 cleanup:
     IMG_Quit();
