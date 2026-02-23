@@ -1,5 +1,6 @@
 #include "main_loop.h"
 
+#include "../entity/player.h"
 #include "../internal/image.h"
 #include "../internal/internals.h"
 
@@ -14,6 +15,15 @@ static void ProcessEvents(void) {
     }
 }
 
+static void Start() {
+    Game_TiledImage knight = {
+        .tilemap = Game_GetTileMap(GAME_TILEMAP_KNIGHT),
+        .tile_x = 0,
+        .tile_y = 0
+    };
+    Player_Init(&knight);
+}
+
 static void Update(void) {}
 
 static void Render(void) {
@@ -21,26 +31,12 @@ static void Render(void) {
     SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0x00, 0xff);
 
     SDL_RenderClear(renderer);
-
-    // BEGIN
-    Game_TiledImage knight = {
-        .tile_x = 0,
-        .tile_y = 0,
-        .tilemap = Game_GetTileMap(GAME_TILEMAP_KNIGHT)
-    };
-
-    Transform transform = {
-        .position = { .x = 100, .y = 200 },
-        .size = { .x = METER_FACTOR, .y = METER_FACTOR }
-    };
-
-    Game_RenderTiledImage(&knight, &transform);
-    // END
-
+    Player_Render();
     SDL_RenderPresent(renderer);
 }
 
 extern void Game_MainLoop(void) {
+    Start();
     while (Game_IsRunning()) {
         ProcessEvents();
         Update();

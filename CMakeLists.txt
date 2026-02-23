@@ -11,6 +11,8 @@ add_executable(unnamed_game src/main.c
         src/internal/image.c
         src/internal/image.h
         src/math/vector.h
-        src/math/transform.h)
+        src/math/transform.h
+        src/entity/player.c
+        src/entity/player.h)
 
 target_link_libraries(unnamed_game SDL2 SDL2main SDL2_ttf SDL2_image)
