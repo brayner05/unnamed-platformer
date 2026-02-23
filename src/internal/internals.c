@@ -1,6 +1,8 @@
 #include <SDL2/SDL_image.h>
 #include "../internal/internals.h"
 
+#include "image.h"
+
 static struct {
     SDL_Window *window;
     SDL_Renderer *renderer;

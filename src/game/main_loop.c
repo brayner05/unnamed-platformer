@@ -3,7 +3,7 @@
 #include "../internal/image.h"
 #include "../internal/internals.h"
 
-static SDL_Surface *image = NULL;
+#define METER_FACTOR 128
 
 static void ProcessEvents(void) {
     SDL_Event event;
@@ -14,9 +14,7 @@ static void ProcessEvents(void) {
     }
 }
 
-static void Update(void) {
-
-}
+static void Update(void) {}
 
 static void Render(void) {
     SDL_Renderer *renderer = Game_GetRenderer();
@@ -24,37 +22,27 @@ static void Render(void) {
 
     SDL_RenderClear(renderer);
 
-    // DELETE
-    Transform t = {
-        .position = {
-            .x = 400,
-            .y = 300
-        },
-        .size = {
-            .x = 100,
-            .y = 100
-        }
+    // BEGIN
+    Game_TiledImage knight = {
+        .tile_x = 0,
+        .tile_y = 0,
+        .tilemap = Game_GetTileMap(0)
     };
-
-    Game_RenderImage(image, &t);
+    Transform transform = {
+        .position = { .x = 100, .y = 200 },
+        .size = { .x = METER_FACTOR, .y = METER_FACTOR }
+    };
+    Game_RenderTiledImage(&knight, &transform);
     // END
 
     SDL_RenderPresent(renderer);
 }
 
 extern void Game_MainLoop(void) {
-    // DELETE
-    image = Game_LoadImage("../assets/png/test_image.png");
-    if (image == NULL) {
-        fprintf(stderr, "Error: %s\n", Game_GetError());
-        return;
-    }
-    // END
-
     while (Game_IsRunning()) {
         ProcessEvents();
         Update();
         Render();
-        SDL_Delay(15);
+        SDL_Delay(200);
     }
 }

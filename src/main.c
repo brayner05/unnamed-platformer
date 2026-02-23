@@ -4,6 +4,7 @@
 
 #include "internal/internals.h"
 #include "game/main_loop.h"
+#include "internal/image.h"
 
 int main(void) {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -38,6 +39,7 @@ int main(void) {
         goto cleanup;
     }
 
+    Game_LoadTilemap("../assets/png/knight.png", 32, 32);
     Game_MainLoop();
 
 cleanup:
