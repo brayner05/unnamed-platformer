@@ -52,7 +52,8 @@ static void Render(void) {
     Game_TiledImage block = {
         .tilemap = Game_GetTileMap(GAME_TILEMAP_WORLD),
         .tile_x = 0,
-        .tile_y = 0
+        .tile_y = 0,
+        .padding = 0
     };
     Transform transform = {
         .position = { 0, 0 },

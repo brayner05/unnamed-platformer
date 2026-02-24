@@ -43,6 +43,7 @@ extern int Game_LoadTilemap(size_t id, const char *path, int tile_width, int til
     SDL_Renderer *renderer = Game_GetRenderer();
     SDL_Surface *surface = Game_LoadImage(path);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
     const Game_TileMap tilemap = {
         .texture = texture,
         .tile_width = tile_width,
@@ -63,10 +64,10 @@ extern Game_TileMap *Game_GetTileMap(size_t id) {
 
 extern void Game_RenderTiledImage(Game_TiledImage *image, Transform *transform, SDL_RendererFlip flip) {
     const SDL_Rect src_rect = {
-        .x = image->tilemap->tile_width * image->tile_x,
-        .y = image->tilemap->tile_height * image->tile_y,
-        .w = image->tilemap->tile_width,
-        .h = image->tilemap->tile_height
+        .x = image->tilemap->tile_width * image->tile_x + image->padding,
+        .y = image->tilemap->tile_height * image->tile_y + image->padding,
+        .w = image->tilemap->tile_width - image->padding,
+        .h = image->tilemap->tile_height - image->padding
     };
 
     const SDL_FRect dst_rect = {

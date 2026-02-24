@@ -15,6 +15,7 @@ typedef struct {
     Game_TileMap *tilemap;
     int tile_x;
     int tile_y;
+    int padding;
 } Game_TiledImage;
 
 enum {

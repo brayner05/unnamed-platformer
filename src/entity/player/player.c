@@ -60,11 +60,12 @@ extern void Player_Init(void) {
     const Game_TiledImage knight = {
         .tilemap = Game_GetTileMap(GAME_TILEMAP_KNIGHT),
         .tile_x = 0,
-        .tile_y = 0
+        .tile_y = 0,
+        .padding = 8
     };
     sprite = knight;
-    transform.size.x = 1 * METER_FACTOR;
-    transform.size.y = 1 * METER_FACTOR;
+    transform.size.x = 0.8f * METER_FACTOR;
+    transform.size.y = 0.8f * METER_FACTOR;
 }
 
 extern Transform *Player_GetTransform(void) {
