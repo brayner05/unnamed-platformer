@@ -59,7 +59,7 @@ extern Game_TileMap *Game_GetTileMap(size_t id) {
     return &Game_TileMapManager.tilemaps[id];
 }
 
-extern void Game_RenderTiledImage(Game_TiledImage *image, Transform *transform) {
+extern void Game_RenderTiledImage(Game_TiledImage *image, Transform *transform, SDL_RendererFlip flip) {
     const SDL_Rect src_rect = {
         .x = image->tilemap->tile_width * image->tile_x,
         .y = image->tilemap->tile_height * image->tile_y,
@@ -76,5 +76,5 @@ extern void Game_RenderTiledImage(Game_TiledImage *image, Transform *transform) 
 
     SDL_Renderer *renderer = Game_GetRenderer();
     SDL_Texture *tilemap_texture = SDL_CreateTextureFromSurface(renderer, image->tilemap->surface);
-    SDL_RenderCopyF(renderer, tilemap_texture, &src_rect, &dst_rect);
+    SDL_RenderCopyExF(renderer, tilemap_texture, &src_rect, &dst_rect, 0.0, NULL, flip);
 }

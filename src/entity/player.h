@@ -3,7 +3,7 @@
 #include "../math/transform.h"
 #include "../internal/image.h"
 
-extern void Player_Init(Game_TiledImage *new_sprite);
+extern void Player_Init(void);
 
 extern Transform *Player_GetTransform(void);
 

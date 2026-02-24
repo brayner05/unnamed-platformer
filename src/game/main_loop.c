@@ -9,22 +9,24 @@
 static void ProcessEvents(void) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
+        if (event.type == SDL_QUIT)
             Game_Quit();
-        }
+
+        if (event.type == SDL_KEYDOWN)
+            Game_KeyDownHandler(&event);
+
+        if (event.type == SDL_KEYUP)
+            Game_KeyUpHandler(&event);
     }
 }
 
 static void Start() {
-    Game_TiledImage knight = {
-        .tilemap = Game_GetTileMap(GAME_TILEMAP_KNIGHT),
-        .tile_x = 0,
-        .tile_y = 0
-    };
-    Player_Init(&knight);
+    Player_Init();
 }
 
-static void Update(void) {}
+static void Update(void) {
+    Player_Update();
+}
 
 static void Render(void) {
     SDL_Renderer *renderer = Game_GetRenderer();
@@ -41,6 +43,6 @@ extern void Game_MainLoop(void) {
         ProcessEvents();
         Update();
         Render();
-        SDL_Delay(200);
+        SDL_Delay(120);
     }
 }

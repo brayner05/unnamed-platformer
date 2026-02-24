@@ -3,11 +3,18 @@
 #include <stdbool.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
+#include <SDL2/SDL_events.h>
 
 enum {
     GAME_INIT_FAIL  = -1,
     GAME_INIT_OK    = 0
 };
+
+typedef enum {
+    AXIS_HORIZONTAL = 0,
+    AXIS_VERTICAL,
+    AXIS_COUNT
+} Game_ControlAxis;
 
 /**
  * Initialize the game by passing the game dependencies.
@@ -49,5 +56,11 @@ extern const char *Game_GetError(void);
  * @param message
  */
 extern void Game_ThrowError(const char *message);
+
+extern void Game_KeyDownHandler(const SDL_Event *event);
+
+extern void Game_KeyUpHandler(const SDL_Event *event);
+
+extern int Game_GetAxis(Game_ControlAxis axis);
 
 #endif

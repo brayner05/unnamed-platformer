@@ -33,8 +33,9 @@ extern SDL_Surface *Game_LoadImage(const char *path);
  * that texture specifically.
  * @param image
  * @param transform
+ * @param flip
  */
-extern void Game_RenderTiledImage(Game_TiledImage *image, Transform *transform);
+extern void Game_RenderTiledImage(Game_TiledImage *image, Transform *transform, SDL_RendererFlip flip);
 
 extern int Game_InitTileMaps(void);
 

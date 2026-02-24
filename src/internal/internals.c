@@ -1,7 +1,9 @@
 #include <SDL2/SDL_image.h>
 #include "../internal/internals.h"
-
 #include "image.h"
+
+#define AXIS_MIN (INT16_MIN)
+#define AXIS_MAX (INT16_MAX)
 
 static struct {
     SDL_Window *window;
@@ -50,4 +52,56 @@ extern void Game_ThrowError(const char *message) {
 
 extern const char *Game_GetError(void) {
     return Game_Internals.error_message;
+}
+
+static int16_t Game_AxisTable[AXIS_COUNT] = { 0 };
+
+extern void Game_KeyDownHandler(const SDL_Event *event) {
+    const SDL_Keycode key = event->key.keysym.sym;
+    switch (key) {
+        case SDLK_w: {
+            Game_AxisTable[AXIS_VERTICAL] = AXIS_MAX;
+            break;
+        }
+        case SDLK_a: {
+            Game_AxisTable[AXIS_HORIZONTAL] = AXIS_MIN;
+            break;
+        }
+        case SDLK_s: {
+            Game_AxisTable[AXIS_VERTICAL] = AXIS_MIN;
+            break;
+        }
+        case SDLK_d: {
+            Game_AxisTable[AXIS_HORIZONTAL] = AXIS_MAX;
+            break;
+        }
+        default: break;
+    }
+}
+
+extern void Game_KeyUpHandler(const SDL_Event *event) {
+    const SDL_Keycode key = event->key.keysym.sym;
+    switch (key) {
+        case SDLK_w: {
+            Game_AxisTable[AXIS_VERTICAL] = 0;
+            break;
+        }
+        case SDLK_a: {
+            Game_AxisTable[AXIS_HORIZONTAL] = 0;
+            break;
+        }
+        case SDLK_s: {
+            Game_AxisTable[AXIS_VERTICAL] = 0;
+            break;
+        }
+        case SDLK_d: {
+            Game_AxisTable[AXIS_HORIZONTAL] = 0;
+            break;
+        }
+        default: break;
+    }
+}
+
+extern int Game_GetAxis(Game_ControlAxis axis) {
+    return (int) Game_AxisTable[axis];
 }
