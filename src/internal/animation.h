@@ -1,6 +1,6 @@
 #ifndef UNNAMED_GAME_ANIMATION_H
 #define UNNAMED_GAME_ANIMATION_H
-
+#include <SDL2/SDL_timer.h>
 /**
  * Play an animation. An animation should be in the form:
  * ```

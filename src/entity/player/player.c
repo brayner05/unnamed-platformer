@@ -1,8 +1,8 @@
 #include "player.h"
-#include "../internal/animation.h"
-#include "../math/transform.h"
-#include "../internal/image.h"
-#include "../internal/internals.h"
+#include "../../internal/animation.h"
+#include "../../math/transform.h"
+#include "../../internal/image.h"
+#include "../../internal/internals.h"
 
 #define ANIMATION_SPEED_MS 100
 #define FACE_LEFT SDL_FLIP_HORIZONTAL
@@ -12,7 +12,7 @@
 #define WEIGHT 5.0f
 #define GRAVITY (9.8f / METER_FACTOR)
 
-#define JUMP_FORCE (-GRAVITY - 5.0f)
+#define JUMP_FORCE (-GRAVITY - 7.0f)
 
 // The graphical representation of the player:
 static Game_TiledImage sprite;

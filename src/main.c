@@ -14,7 +14,7 @@ int main(void) {
 
     if (IMG_Init(IMG_INIT_PNG) < 0) {
         fprintf(stderr, "Error: %s\n", IMG_GetError());
-        goto cleanup_no_img;;
+        goto cleanup_no_img;
     }
 
     SDL_Window *window = SDL_CreateWindow(
@@ -40,6 +40,9 @@ int main(void) {
     }
 
     Game_LoadTilemap(GAME_TILEMAP_KNIGHT, "../assets/png/knight.png", 32, 32);
+
+
+    Game_LoadTilemap(GAME_TILEMAP_WORLD, "../assets/png/world_tileset.png", 16, 16);
     Game_MainLoop();
 
     for (size_t id = 0; id < GAME_TILEMAPS_MAX; ++id) {

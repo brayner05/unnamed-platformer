@@ -28,8 +28,8 @@ extern int Game_DestroyTileMap(size_t id) {
     }
 
     Game_TileMap *tilemap = &Game_TileMapManager.tilemaps[id];
-    SDL_FreeSurface(tilemap->surface);
-    tilemap->surface = NULL;
+    SDL_DestroyTexture(tilemap->texture);
+    tilemap->texture = NULL;
 
     return 0;
 }
@@ -40,9 +40,11 @@ extern int Game_LoadTilemap(size_t id, const char *path, int tile_width, int til
         return -1;
     }
 
+    SDL_Renderer *renderer = Game_GetRenderer();
     SDL_Surface *surface = Game_LoadImage(path);
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
     const Game_TileMap tilemap = {
-        .surface = surface,
+        .texture = texture,
         .tile_width = tile_width,
         .tile_height = tile_height,
     };
@@ -75,6 +77,5 @@ extern void Game_RenderTiledImage(Game_TiledImage *image, Transform *transform, 
     };
 
     SDL_Renderer *renderer = Game_GetRenderer();
-    SDL_Texture *tilemap_texture = SDL_CreateTextureFromSurface(renderer, image->tilemap->surface);
-    SDL_RenderCopyExF(renderer, tilemap_texture, &src_rect, &dst_rect, 0.0, NULL, flip);
+    SDL_RenderCopyExF(renderer, image->tilemap->texture, &src_rect, &dst_rect, 0.0, NULL, flip);
 }

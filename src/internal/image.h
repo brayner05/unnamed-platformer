@@ -6,7 +6,7 @@
 #define GAME_TILEMAPS_MAX 32
 
 typedef struct {
-    SDL_Surface *surface;
+    SDL_Texture *texture;
     int tile_width;
     int tile_height;
 } Game_TileMap;
@@ -18,7 +18,8 @@ typedef struct {
 } Game_TiledImage;
 
 enum {
-    GAME_TILEMAP_KNIGHT = 0
+    GAME_TILEMAP_KNIGHT = 0,
+    GAME_TILEMAP_WORLD  = 1
 };
 
 /**

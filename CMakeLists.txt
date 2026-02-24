@@ -12,8 +12,8 @@ add_executable(unnamed_game src/main.c
         src/internal/image.h
         src/math/vector.h
         src/math/transform.h
-        src/entity/player.c
-        src/entity/player.h
+        src/entity/player/player.c
+        src/entity/player/player.h
         src/internal/animation.c
         src/internal/animation.h)
 

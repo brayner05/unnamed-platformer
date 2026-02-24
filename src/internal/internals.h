@@ -20,6 +20,7 @@ typedef enum {
     AXIS_HORIZONTAL = 0,
     AXIS_VERTICAL,
     AXIS_JUMP,
+    AXIS_MOUSE_LEFT,
     AXIS_COUNT
 } Game_ControlAxis;
 
@@ -67,6 +68,10 @@ extern void Game_ThrowError(const char *message);
 extern void Game_KeyDownHandler(const SDL_Event *event);
 
 extern void Game_KeyUpHandler(const SDL_Event *event);
+
+extern void Game_MouseDownHandler(const SDL_Event *event);
+
+extern void Game_MouseUpHandler(const SDL_Event *event);
 
 extern int Game_GetAxis(Game_ControlAxis axis);
 

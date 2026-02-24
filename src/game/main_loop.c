@@ -1,5 +1,6 @@
 #include "main_loop.h"
-#include "../entity/player.h"
+#include "../entity/player/player.h"
+#include "../internal/image.h"
 #include "../internal/internals.h"
 
 /**
@@ -16,6 +17,12 @@ static void ProcessEvents(void) {
 
         if (event.type == SDL_KEYUP)
             Game_KeyUpHandler(&event);
+
+        if (event.type == SDL_MOUSEBUTTONDOWN)
+            Game_MouseDownHandler(&event);
+
+        if (event.type == SDL_MOUSEBUTTONUP)
+            Game_MouseUpHandler(&event);
     }
 }
 
@@ -42,6 +49,16 @@ static void Render(void) {
 
     SDL_RenderClear(renderer);
     Player_Render();
+    Game_TiledImage block = {
+        .tilemap = Game_GetTileMap(GAME_TILEMAP_WORLD),
+        .tile_x = 0,
+        .tile_y = 0
+    };
+    Transform transform = {
+        .position = { 0, 0 },
+        .size = { METER_FACTOR / 2.0f, METER_FACTOR / 2.0f }
+    };
+    Game_RenderTiledImage(&block, &transform, SDL_FLIP_NONE);
     SDL_RenderPresent(renderer);
 }
 

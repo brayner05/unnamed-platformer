@@ -110,6 +110,18 @@ extern void Game_KeyUpHandler(const SDL_Event *event) {
     }
 }
 
+extern void Game_MouseDownHandler(const SDL_Event *event) {
+    const Uint8 mouse_button = event->button.button;
+    if (mouse_button == SDL_BUTTON_LEFT)
+        Game_AxisTable[AXIS_MOUSE_LEFT] = AXIS_MAX;
+}
+
+extern void Game_MouseUpHandler(const SDL_Event *event) {
+    const Uint8 mouse_button = event->button.button;
+    if (mouse_button == SDL_BUTTON_LEFT)
+        Game_AxisTable[AXIS_MOUSE_LEFT] = 0;
+}
+
 extern int Game_GetAxis(Game_ControlAxis axis) {
     return (int) Game_AxisTable[axis];
 }
