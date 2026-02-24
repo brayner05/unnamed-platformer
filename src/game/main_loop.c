@@ -4,8 +4,6 @@
 #include "../internal/image.h"
 #include "../internal/internals.h"
 
-#define METER_FACTOR 128
-
 static void ProcessEvents(void) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -40,9 +38,18 @@ static void Render(void) {
 extern void Game_MainLoop(void) {
     Start();
     while (Game_IsRunning()) {
+        const Uint32 frame_start = SDL_GetTicks();
+
         ProcessEvents();
         Update();
         Render();
-        SDL_Delay(120);
+
+        const Uint32 frame_end = SDL_GetTicks();
+        const Uint32 frame_time = frame_end - frame_start;
+
+        if ((float) frame_time < TARGET_FRAME_TIME) {
+            const int delay_time = (int) (TARGET_FRAME_TIME - (float) frame_time);
+            SDL_Delay(delay_time);
+        }
     }
 }

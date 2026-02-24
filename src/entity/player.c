@@ -1,16 +1,23 @@
 #include "player.h"
+#include "../internal/animation.h"
+#include <SDL2/SDL_timer.h>
+
 #include "../math/transform.h"
 #include "../internal/image.h"
 #include "../internal/internals.h"
 
 #define METER_FACTOR 128
-#define MOVEMENT_SPEED 3.5f
+#define MOVEMENT_SPEED 1.5f
+#define ANIMATION_SPEED_MS 100
 #define FACE_LEFT SDL_FLIP_HORIZONTAL
 #define FACE_RIGHT SDL_FLIP_NONE
 
 static Transform transform = { 0 };
+
 static Game_TiledImage sprite;
+
 static bool moving = false;
+
 static SDL_RendererFlip facing_direction = FACE_RIGHT;
 
 static void SprintAnimation(void) {
@@ -54,20 +61,20 @@ extern void Player_Render(void) {
 extern void Player_Update(void) {
     // Idle
     if (Game_GetAxis(AXIS_HORIZONTAL) == 0) {
-        IdleAnimation();
+        Game_PlayAnimation(IdleAnimation, ANIMATION_SPEED_MS);
     }
 
     // Moving right
     if (Game_GetAxis(AXIS_HORIZONTAL) > 0) {
-        facing_direction = FACE_LEFT;
-        SprintAnimation();
+        facing_direction = FACE_RIGHT;
+        Game_PlayAnimation(SprintAnimation, ANIMATION_SPEED_MS);
         transform.position.x += MOVEMENT_SPEED * METER_FACTOR / 60.0f;
     }
 
     // Moving left
     if (Game_GetAxis(AXIS_HORIZONTAL) < 0) {
         facing_direction = FACE_LEFT;
-        SprintAnimation();
-        transform.position.x -= MOVEMENT_SPEED * METER_FACTOR / 60.0f;
+        Game_PlayAnimation(SprintAnimation, ANIMATION_SPEED_MS);
+        transform.position.x -= MOVEMENT_SPEED * METER_FACTOR / TARGET_FPS;
     }
 }

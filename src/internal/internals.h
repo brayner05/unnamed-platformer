@@ -5,6 +5,9 @@
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_events.h>
 
+#define TARGET_FPS 60.0f
+#define TARGET_FRAME_TIME (1000.0f / TARGET_FPS)
+
 enum {
     GAME_INIT_FAIL  = -1,
     GAME_INIT_OK    = 0
