@@ -1,0 +1,12 @@
+LEVELS - .MAP_LAYOUT FILES:
+
+Map layout files are laid out in an easy-to-parse fashion:
+    BLOCK_ID X Y W H
+
+Each line is a block, described by which texture to use, and then the block's coordinates.
+E.g.
+    PLAT0 0 -1 10 5
+
+^ Creates a 'PLAT0' block at [0, WINDOW_HEIGHT - 1, 10, 5].
+All numbers are in meters (which are interpreted by the engine), and a negative number
+is offset from the bottom of the screen instead of the top.

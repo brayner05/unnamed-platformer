@@ -1,9 +1,10 @@
 #include "main_loop.h"
-
 #include "../entity/player.h"
-#include "../internal/image.h"
 #include "../internal/internals.h"
 
+/**
+ * Poll and process SDL events whenever available.
+ */
 static void ProcessEvents(void) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -18,14 +19,23 @@ static void ProcessEvents(void) {
     }
 }
 
+/**
+ * Run before the gameloop begins.
+ */
 static void Start() {
     Player_Init();
 }
 
+/**
+ * Updates game state once per frame.
+ */
 static void Update(void) {
     Player_Update();
 }
 
+/**
+ * Deals with rendering graphics once per frame.
+ */
 static void Render(void) {
     SDL_Renderer *renderer = Game_GetRenderer();
     SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0x00, 0xff);
@@ -35,6 +45,9 @@ static void Render(void) {
     SDL_RenderPresent(renderer);
 }
 
+/**
+ * The actual game loop:
+ */
 extern void Game_MainLoop(void) {
     Start();
     while (Game_IsRunning()) {
@@ -47,6 +60,9 @@ extern void Game_MainLoop(void) {
         const Uint32 frame_end = SDL_GetTicks();
         const Uint32 frame_time = frame_end - frame_start;
 
+        /*
+         * Cap the framerate at `TARGET_FRAME_TIME`.
+         */
         if ((float) frame_time < TARGET_FRAME_TIME) {
             const int delay_time = (int) (TARGET_FRAME_TIME - (float) frame_time);
             SDL_Delay(delay_time);

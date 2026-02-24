@@ -75,6 +75,10 @@ extern void Game_KeyDownHandler(const SDL_Event *event) {
             Game_AxisTable[AXIS_HORIZONTAL] = AXIS_MAX;
             break;
         }
+        case SDLK_SPACE: {
+            Game_AxisTable[AXIS_JUMP] = AXIS_MAX;
+            break;
+        }
         default: break;
     }
 }
@@ -98,10 +102,24 @@ extern void Game_KeyUpHandler(const SDL_Event *event) {
             Game_AxisTable[AXIS_HORIZONTAL] = 0;
             break;
         }
+        case SDLK_SPACE: {
+            Game_AxisTable[AXIS_JUMP] = 0;
+            break;
+        }
         default: break;
     }
 }
 
 extern int Game_GetAxis(Game_ControlAxis axis) {
     return (int) Game_AxisTable[axis];
+}
+
+extern Vector2D Game_GetWindowSize(void) {
+    int width, height;
+    SDL_GetWindowSize(Game_Internals.window, &width, &height);
+    const Vector2D dimensions = {
+        .x = (float) width,
+        .y = (float) height
+    };
+    return dimensions;
 }

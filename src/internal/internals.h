@@ -4,9 +4,12 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_events.h>
+#include "../math/vector.h"
 
 #define TARGET_FPS 60.0f
 #define TARGET_FRAME_TIME (1000.0f / TARGET_FPS)
+
+#define METER_FACTOR 128
 
 enum {
     GAME_INIT_FAIL  = -1,
@@ -16,6 +19,7 @@ enum {
 typedef enum {
     AXIS_HORIZONTAL = 0,
     AXIS_VERTICAL,
+    AXIS_JUMP,
     AXIS_COUNT
 } Game_ControlAxis;
 
@@ -65,5 +69,14 @@ extern void Game_KeyDownHandler(const SDL_Event *event);
 extern void Game_KeyUpHandler(const SDL_Event *event);
 
 extern int Game_GetAxis(Game_ControlAxis axis);
+
+/**
+ * *NOTE* The width and height returned by this method are floats
+ * due to the current limitations of the <code>Vector2D</code> struct (i.e. it uses
+ * structs). It is recommended to cast the values to <code>int</code> before using them.
+ *
+ * @return The dimensions of the window.
+ */
+extern Vector2D Game_GetWindowSize(void);
 
 #endif
