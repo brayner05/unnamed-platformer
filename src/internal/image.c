@@ -62,7 +62,7 @@ extern Game_TileMap *Game_GetTileMap(size_t id) {
     return &Game_TileMapManager.tilemaps[id];
 }
 
-extern void Game_RenderTiledImage(Game_TiledImage *image, Transform *transform, SDL_RendererFlip flip) {
+extern void Game_RenderTiledImage(Game_TiledSprite *image, Transform *transform, SDL_RendererFlip flip) {
     const SDL_Rect src_rect = {
         .x = image->tilemap->tile_width * image->tile_x + image->padding,
         .y = image->tilemap->tile_height * image->tile_y + image->padding,

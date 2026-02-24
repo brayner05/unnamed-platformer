@@ -15,7 +15,7 @@
 #define JUMP_FORCE (-GRAVITY - 7.0f)
 
 // The graphical representation of the player:
-static Game_TiledImage sprite;
+static Game_TiledSprite sprite;
 
 // TODO: add abstraction
 // The direction the player is looking:
@@ -57,7 +57,7 @@ static void IdleAnimation(void) {
  * Initialize all dependency components.
  */
 extern void Player_Init(void) {
-    const Game_TiledImage knight = {
+    const Game_TiledSprite knight = {
         .tilemap = Game_GetTileMap(GAME_TILEMAP_KNIGHT),
         .tile_x = 0,
         .tile_y = 0,

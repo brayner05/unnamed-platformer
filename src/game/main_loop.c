@@ -49,7 +49,7 @@ static void Render(void) {
 
     SDL_RenderClear(renderer);
     Player_Render();
-    Game_TiledImage block = {
+    Game_TiledSprite block = {
         .tilemap = Game_GetTileMap(GAME_TILEMAP_WORLD),
         .tile_x = 0,
         .tile_y = 0,

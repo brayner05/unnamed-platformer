@@ -16,7 +16,7 @@ typedef struct {
     int tile_x;
     int tile_y;
     int padding;
-} Game_TiledImage;
+} Game_TiledSprite;
 
 enum {
     GAME_TILEMAP_KNIGHT = 0,
@@ -37,7 +37,7 @@ extern SDL_Surface *Game_LoadImage(const char *path);
  * @param transform
  * @param flip
  */
-extern void Game_RenderTiledImage(Game_TiledImage *image, Transform *transform, SDL_RendererFlip flip);
+extern void Game_RenderTiledImage(Game_TiledSprite *image, Transform *transform, SDL_RendererFlip flip);
 
 extern int Game_InitTileMaps(void);
 
