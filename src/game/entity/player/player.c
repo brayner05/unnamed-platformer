@@ -1,9 +1,9 @@
 #include "player.h"
-#include "../../internal/animation.h"
-#include "../../math/transform.h"
-#include "../../internal/image.h"
-#include "../../internal/internals.h"
-#include "../../game/physics/physics.h"
+#include "../../../internal/animation.h"
+#include "../../../math/transform.h"
+#include "../../../internal/image.h"
+#include "../../../internal/internals.h"
+#include "../../../game/physics/physics.h"
 
 #define ANIMATION_SPEED_MS 100
 #define FACE_LEFT SDL_FLIP_HORIZONTAL

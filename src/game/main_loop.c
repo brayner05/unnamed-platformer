@@ -1,7 +1,9 @@
 #include "main_loop.h"
-#include "../entity/player/player.h"
-#include "../internal/image.h"
+#include "./entity/player/player.h"
 #include "../internal/internals.h"
+
+// TEMPORARY START
+// TEMPORARY END
 
 /**
  * Poll and process SDL events whenever available.

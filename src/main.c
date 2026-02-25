@@ -40,8 +40,8 @@ int main(void) {
     }
 
     Game_LoadTilemap(GAME_TILEMAP_KNIGHT, "../assets/png/knight.png", 32, 32);
-
-
+    Game_LoadTilemap(GAME_TILEMAP_SLIME_GREEN, "../assets/png/slime_green.png", 32, 32);
+    Game_LoadTilemap(GAME_TILEMAP_SLIME_PURPLE, "../assets/png/slime_purple.png", 32, 32);
     Game_LoadTilemap(GAME_TILEMAP_WORLD, "../assets/png/world_tileset.png", 16, 16);
     Game_MainLoop();
 

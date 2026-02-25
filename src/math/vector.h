@@ -7,6 +7,14 @@ typedef struct {
     float y;
 } Vector2D;
 
+static inline Vector2D Vector2D_Create(float x, float y) {
+    const Vector2D v = {
+        .x = x,
+        .y = y
+    };
+    return v;
+}
+
 static inline float Vector2D_Magnitude(const Vector2D *v) {
     return sqrtf(v->x * v->x + v->y * v->y);
 }

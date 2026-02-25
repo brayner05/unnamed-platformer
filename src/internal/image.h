@@ -19,8 +19,10 @@ typedef struct {
 } Game_TiledSprite;
 
 enum {
-    GAME_TILEMAP_KNIGHT = 0,
-    GAME_TILEMAP_WORLD  = 1
+    GAME_TILEMAP_KNIGHT         = 0,
+    GAME_TILEMAP_WORLD          = 1,
+    GAME_TILEMAP_SLIME_GREEN    = 2,
+    GAME_TILEMAP_SLIME_PURPLE   = 3
 };
 
 /**
