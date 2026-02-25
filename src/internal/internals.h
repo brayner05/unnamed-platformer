@@ -9,7 +9,7 @@
 #define TARGET_FPS 60.0f
 #define TARGET_FRAME_TIME (1000.0f / TARGET_FPS)
 
-#define METER_FACTOR 128
+#define METER_FACTOR (64)
 
 enum {
     GAME_INIT_FAIL  = -1,

@@ -49,17 +49,6 @@ static void Render(void) {
 
     SDL_RenderClear(renderer);
     Player_Render();
-    Game_TiledSprite block = {
-        .tilemap = Game_GetTileMap(GAME_TILEMAP_WORLD),
-        .tile_x = 0,
-        .tile_y = 0,
-        .padding = 0
-    };
-    Transform transform = {
-        .position = { 0, 0 },
-        .size = { METER_FACTOR / 2.0f, METER_FACTOR / 2.0f }
-    };
-    Game_RenderTiledImage(&block, &transform, SDL_FLIP_NONE);
     SDL_RenderPresent(renderer);
 }
 

@@ -3,6 +3,7 @@
 #include "../../math/transform.h"
 #include "../../internal/image.h"
 #include "../../internal/internals.h"
+#include "../../game/physics/physics.h"
 
 #define ANIMATION_SPEED_MS 100
 #define FACE_LEFT SDL_FLIP_HORIZONTAL
@@ -10,9 +11,8 @@
 
 #define MOVEMENT_SPEED 1.5f
 #define WEIGHT 5.0f
-#define GRAVITY (9.8f / METER_FACTOR)
 
-#define JUMP_FORCE (-GRAVITY - 7.0f)
+#define JUMP_FORCE (-GRAVITY_PX_PER_FRAME_SQUARED - 10.0f)
 
 // The graphical representation of the player:
 static Game_TiledSprite sprite;
@@ -24,8 +24,10 @@ static SDL_RendererFlip facing_direction = FACE_RIGHT;
 // The players transform component:
 static Transform transform = { 0 };
 
-// The velocity of the player:
-static Vector2D velocity = { 0, 0 };
+Game_PhysicsObject physics_object = {
+    .weight = WEIGHT,
+    .velocity = { 0, 0 }
+};
 
 // Flag tracking whether the player is moving or not,
 // used for animation:
@@ -64,8 +66,8 @@ extern void Player_Init(void) {
         .padding = 8
     };
     sprite = knight;
-    transform.size.x = 0.8f * METER_FACTOR;
-    transform.size.y = 0.8f * METER_FACTOR;
+    transform.size.x = 1.5f * METER_FACTOR;
+    transform.size.y = 1.5f * METER_FACTOR;
 }
 
 extern Transform *Player_GetTransform(void) {
@@ -89,14 +91,14 @@ static void MoveLeft(void) {
 }
 
 static void Jump(void) {
-    velocity.y = JUMP_FORCE;
+    physics_object.velocity.y = JUMP_FORCE;
     falling = true;
 }
 
 extern void Player_Update(void) {
     // Gravity
     if (falling) {
-        velocity.y += WEIGHT * GRAVITY;
+        Physics_ApplyGravity(&physics_object);
     }
 
     // Idle
@@ -121,5 +123,5 @@ extern void Player_Update(void) {
         falling = false;
     }
 
-    transform.position = Vector2D_Add(&transform.position, &velocity);
+    transform.position = Vector2D_Add(&transform.position, &physics_object.velocity);
 }
