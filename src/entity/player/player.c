@@ -10,7 +10,7 @@
 #define FACE_RIGHT SDL_FLIP_NONE
 
 #define MOVEMENT_SPEED 1.5f
-#define WEIGHT 5.0f
+#define MASS 5.0f
 
 #define JUMP_FORCE (-GRAVITY_PX_PER_FRAME_SQUARED - 10.0f)
 
@@ -25,7 +25,7 @@ static SDL_RendererFlip facing_direction = FACE_RIGHT;
 static Transform transform = { 0 };
 
 Game_PhysicsObject physics_object = {
-    .weight = WEIGHT,
+    .mass = MASS,
     .velocity = { 0, 0 }
 };
 
@@ -97,14 +97,11 @@ static void Jump(void) {
 
 extern void Player_Update(void) {
     // Gravity
-    if (falling) {
-        Physics_ApplyGravity(&physics_object);
-    }
+    Physics_ApplyGravity(&physics_object);
 
     // Idle
-    if (Game_GetAxis(AXIS_HORIZONTAL) == 0) {
+    if (Game_GetAxis(AXIS_HORIZONTAL) == 0)
         Game_PlayAnimation(IdleAnimation, ANIMATION_SPEED_MS);
-    }
 
     // Moving right
     if (Game_GetAxis(AXIS_HORIZONTAL) > 0)
@@ -118,10 +115,14 @@ extern void Player_Update(void) {
     if (!falling && Game_GetAxis(AXIS_JUMP))
         Jump();
 
-    if (transform.position.y >= 200) {
-        transform.position.y = 200;
+    transform.position = Vector2D_Add(&transform.position, &physics_object.velocity);
+
+    // TEMPORARY START
+    const Vector2D window_dimensions = Game_GetWindowSize();
+    if (transform.position.y + transform.size.y >= window_dimensions.y) {
+        transform.position.y = window_dimensions.y - transform.size.y;
+        physics_object.velocity.y = 0;
         falling = false;
     }
-
-    transform.position = Vector2D_Add(&transform.position, &physics_object.velocity);
+    // TEMPORARY END
 }

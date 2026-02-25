@@ -18,7 +18,7 @@
 #define GRAVITY_PX_PER_FRAME_SQUARED (GRAVITY_M_PER_S_SQUARED * METER_FACTOR / (TARGET_FPS * TARGET_FPS))
 
 typedef struct {
-    float weight;
+    float mass;
     Vector2D velocity;
 } Game_PhysicsObject;
 
