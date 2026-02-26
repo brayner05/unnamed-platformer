@@ -23,7 +23,7 @@ extern int Game_InitTileMaps(void) {
     return 0;
 }
 
-extern int Game_DestroyTileMap(size_t id) {
+extern int Game_DestroyTileMap(Game_TileMapId id) {
     if (id >= GAME_TILEMAPS_MAX) {
         Game_ThrowError("TILEMAP OUT OF BOUNDS");
         return -1;
@@ -56,7 +56,7 @@ extern int Game_LoadTilemap(size_t id, const char *path, int tile_width, int til
     return 0;
 }
 
-extern Game_TileMap *Game_GetTileMap(size_t id) {
+extern Game_TileMap *Game_GetTileMap(const Game_TileMapId id) {
     if (id >= GAME_TILEMAPS_MAX) {
         Game_ThrowError("Tilemap access outside of bounds");
         return NULL;
@@ -66,6 +66,11 @@ extern Game_TileMap *Game_GetTileMap(size_t id) {
 
 extern void Game_RenderTiledImage(Game_TiledSprite *image, Transform *transform, SDL_RendererFlip flip) {
     Game_TileMap *tilemap = Game_GetTileMap(image->tilemap);
+    if (tilemap == NULL) {
+        Game_ThrowError("INVALID TILEMAP ID");
+        return;
+    }
+
     const SDL_Rect src_rect = {
         .x = tilemap->tile_width * image->tile_x + image->padding,
         .y = tilemap->tile_height * image->tile_y + image->padding,
@@ -82,10 +87,5 @@ extern void Game_RenderTiledImage(Game_TiledSprite *image, Transform *transform,
     };
 
     SDL_Renderer *renderer = Game_GetRenderer();
-    const Game_TileMap *image_tilemap = Game_GetTileMap(image->tilemap);
-    if (image_tilemap == NULL) {
-        Game_ThrowError("INVALID TILEMAP ID");
-        return;
-    }
-    SDL_RenderCopyExF(renderer, image_tilemap->texture, &src_rect, &dst_rect, 0.0, NULL, flip);
+    SDL_RenderCopyExF(renderer, tilemap->texture, &src_rect, &dst_rect, 0.0, NULL, flip);
 }

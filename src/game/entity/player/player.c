@@ -42,11 +42,13 @@ static Game_TiledSprite sprite = {
     .padding = 8
 };;
 
+// Allows gravity to work:
 Game_PhysicsObject physics_object = {
     .mass = MASS,
     .velocity = { 0, 0 }
 };
 
+// Allows for collision:
 Game_ColliderObject collider_object;
 
 static void SprintAnimation(void) {

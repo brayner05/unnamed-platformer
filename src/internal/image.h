@@ -43,9 +43,9 @@ extern void Game_RenderTiledImage(Game_TiledSprite *image, Transform *transform,
 
 extern int Game_InitTileMaps(void);
 
-extern int Game_DestroyTileMap(size_t id);
+extern int Game_DestroyTileMap(Game_TileMapId id);
 
-extern Game_TileMap *Game_GetTileMap(size_t id);
+extern Game_TileMap *Game_GetTileMap(Game_TileMapId id);
 
 extern int Game_LoadTilemap(size_t id, const char *path, int tile_width, int tile_height);
 
