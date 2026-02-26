@@ -1,4 +1,6 @@
 #include "player.h"
+
+#include "../../camera.h"
 #include "../../../internal/animation.h"
 #include "../../../math/transform.h"
 #include "../../../internal/image.h"
@@ -9,10 +11,10 @@
 #define FACE_LEFT SDL_FLIP_HORIZONTAL
 #define FACE_RIGHT SDL_FLIP_NONE
 
-#define MOVEMENT_SPEED 1.5f
+#define MOVEMENT_SPEED 3.0f
 #define MASS 5.0f
 
-#define JUMP_FORCE (-GRAVITY_PX_PER_FRAME_SQUARED - 10.0f)
+#define JUMP_FORCE (-GRAVITY_PX_PER_FRAME_SQUARED * MASS - 10.0f)
 
 // The graphical representation of the player:
 static Game_TiledSprite sprite;
@@ -20,6 +22,13 @@ static Game_TiledSprite sprite;
 // TODO: add abstraction
 // The direction the player is looking:
 static SDL_RendererFlip facing_direction = FACE_RIGHT;
+
+// Flag tracking whether the player is moving or not,
+// used for animation:
+static bool moving = false;
+
+// Falling flag used for gravity:
+static bool falling = true;
 
 // The players transform component:
 static Transform transform = { 0 };
@@ -29,12 +38,7 @@ Game_PhysicsObject physics_object = {
     .velocity = { 0, 0 }
 };
 
-// Flag tracking whether the player is moving or not,
-// used for animation:
-static bool moving = false;
-
-// Falling flag used for gravity:
-static bool falling = true;
+Game_ColliderObject collider_object;
 
 static void SprintAnimation(void) {
     if (!moving) {
@@ -68,6 +72,10 @@ extern void Player_Init(void) {
     sprite = knight;
     transform.size.x = 1.5f * METER_FACTOR;
     transform.size.y = 1.5f * METER_FACTOR;
+
+    collider_object.bounds = &transform;
+    collider_object.id = "player";
+    Physics_RegisterCollider(&collider_object);
 }
 
 extern Transform *Player_GetTransform(void) {
@@ -75,6 +83,23 @@ extern Transform *Player_GetTransform(void) {
 }
 
 extern void Player_Render(void) {
+    // true_position = camera.position + transform.position
+    /*
+     * Maybe render as follows:
+     * void Camera_Render() {
+     *      for object in scene {
+     *          if in bounds of camera {
+     *              Vector2D camera_offset = camera.position
+     *              Transform real_pos = {
+     *                  position = object.position - camera_offset
+     *                  size = object.size
+     *              }
+     *          }
+     *      }
+     * }
+     *
+     * Would have to edit the render function to accomodate this
+     */
     Game_RenderTiledImage(&sprite, &transform, facing_direction);
 }
 
@@ -95,6 +120,21 @@ static void Jump(void) {
     falling = true;
 }
 
+static void FocusCamera(void) {
+    const Transform focus_point = {
+        .position = {
+            .x = transform.position.x + 200,
+            .y = transform.position.y - 200
+        },
+        .size = transform.size
+    };
+    Camera_LookAt(&focus_point);
+}
+
+static void UpdatePosition(void) {
+    transform.position = Vector2D_Add(&transform.position, &physics_object.velocity);
+}
+
 extern void Player_Update(void) {
     // Gravity
     Physics_ApplyGravity(&physics_object);
@@ -104,23 +144,26 @@ extern void Player_Update(void) {
         Game_PlayAnimation(IdleAnimation, ANIMATION_SPEED_MS);
 
     // Moving right
-    if (Game_GetAxis(AXIS_HORIZONTAL) > 0)
+    if (Game_GetAxis(AXIS_HORIZONTAL) > 0) {
         MoveRight();
+    }
 
     // Moving left
-    if (Game_GetAxis(AXIS_HORIZONTAL) < 0)
+    if (Game_GetAxis(AXIS_HORIZONTAL) < 0) {
         MoveLeft();
+    }
 
     // Jumping
     if (!falling && Game_GetAxis(AXIS_JUMP))
         Jump();
 
-    transform.position = Vector2D_Add(&transform.position, &physics_object.velocity);
+    UpdatePosition();
+    FocusCamera();
 
     // TEMPORARY START
     const Vector2D window_dimensions = Game_GetWindowSize();
-    if (transform.position.y + transform.size.y >= window_dimensions.y) {
-        transform.position.y = window_dimensions.y - transform.size.y;
+    if (transform.position.y + transform.size.y >= 200) {
+        transform.position.y = 200 - transform.size.y;
         physics_object.velocity.y = 0;
         falling = false;
     }

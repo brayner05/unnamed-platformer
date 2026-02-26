@@ -7,6 +7,8 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
     src/*.c
 )
 
-add_executable(unnamed_game ${SOURCES})
+add_executable(unnamed_game ${SOURCES}
+        src/game/camera.c
+        src/game/camera.h)
 
 target_link_libraries(unnamed_game SDL2 SDL2main SDL2_ttf SDL2_image)

@@ -10,6 +10,7 @@ static struct {
     SDL_Renderer *renderer;
     char *error_message;
     bool running;
+    Uint32 time_last_frame;
 } Game_Internals = {
     .window = NULL,
     .renderer = NULL,
@@ -134,4 +135,20 @@ extern Vector2D Game_GetWindowSize(void) {
         .y = (float) height
     };
     return dimensions;
+}
+
+/*
+ * NOT WORKING
+ * vvvvvvvvvvvvvvvvv
+ */
+
+extern void Game_Tick(void) {
+    Game_Internals.time_last_frame = SDL_GetTicks();
+}
+
+extern float Game_DeltaTime(void) {
+    const Uint32 time_now = SDL_GetTicks();
+    const Uint32 delta_ms = time_now - Game_Internals.time_last_frame;
+    const float delta_time = delta_ms / 1000.0f;
+    return delta_time;
 }

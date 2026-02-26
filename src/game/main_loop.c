@@ -1,6 +1,10 @@
 #include "main_loop.h"
+
+#include "camera.h"
+#include "../internal/image.h"
 #include "./entity/player/player.h"
 #include "../internal/internals.h"
+#include "physics/physics.h"
 
 // TEMPORARY START
 // TEMPORARY END
@@ -32,6 +36,8 @@ static void ProcessEvents(void) {
  * Run before the gameloop begins.
  */
 static void Start() {
+    Physics_EnableCollision();
+    Camera_Init();
     Player_Init();
 }
 
@@ -51,6 +57,16 @@ static void Render(void) {
 
     SDL_RenderClear(renderer);
     Player_Render();
+    Game_TiledSprite sp = {
+        .tilemap = Game_GetTileMap(GAME_TILEMAP_WORLD),
+        .tile_x = 1,
+        .tile_y = 0
+    };
+    Transform transform = {
+        .position = { 0, 0 },
+        .size = { METER_FACTOR, METER_FACTOR }
+    };
+    Game_RenderTiledImage(&sp, &transform, SDL_FLIP_NONE);
     SDL_RenderPresent(renderer);
 }
 
@@ -72,8 +88,8 @@ extern void Game_MainLoop(void) {
         /*
          * Cap the framerate at `TARGET_FRAME_TIME`.
          */
-        if ((float) frame_time < TARGET_FRAME_TIME) {
-            const int delay_time = (int) (TARGET_FRAME_TIME - (float) frame_time);
+        if ((float) frame_time < TARGET_FRAME_TIME_MS) {
+            const int delay_time = (int) (TARGET_FRAME_TIME_MS - (float) frame_time);
             SDL_Delay(delay_time);
         }
     }

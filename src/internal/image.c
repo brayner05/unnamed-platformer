@@ -2,6 +2,8 @@
 #include <SDL2/SDL_surface.h>
 #include "image.h"
 
+#include "../game/camera.h"
+
 static struct {
     Game_TileMap tilemaps[GAME_TILEMAPS_MAX];
     size_t count;
@@ -70,9 +72,10 @@ extern void Game_RenderTiledImage(Game_TiledSprite *image, Transform *transform,
         .h = image->tilemap->tile_height - image->padding
     };
 
+    const Transform *camera_transform = Camera_GetTransform();
     const SDL_FRect dst_rect = {
-        .x = transform->position.x,
-        .y = transform->position.y,
+        .x = transform->position.x - camera_transform->position.x,
+        .y = transform->position.y - camera_transform->position.y,
         .w = transform->size.x,
         .h = transform->size.y
     };
