@@ -1,6 +1,7 @@
 #include "main_loop.h"
 #include "./entity/player/player.h"
 #include "../internal/internals.h"
+#include "physics/physics.h"
 
 // TEMPORARY START
 // TEMPORARY END
@@ -32,6 +33,7 @@ static void ProcessEvents(void) {
  * Run before the gameloop begins.
  */
 static void Start() {
+    Physics_EnableCollision();
     Player_Init();
 }
 
@@ -72,8 +74,8 @@ extern void Game_MainLoop(void) {
         /*
          * Cap the framerate at `TARGET_FRAME_TIME`.
          */
-        if ((float) frame_time < TARGET_FRAME_TIME) {
-            const int delay_time = (int) (TARGET_FRAME_TIME - (float) frame_time);
+        if ((float) frame_time < TARGET_FRAME_TIME_MS) {
+            const int delay_time = (int) (TARGET_FRAME_TIME_MS - (float) frame_time);
             SDL_Delay(delay_time);
         }
     }

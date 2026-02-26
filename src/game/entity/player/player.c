@@ -9,10 +9,10 @@
 #define FACE_LEFT SDL_FLIP_HORIZONTAL
 #define FACE_RIGHT SDL_FLIP_NONE
 
-#define MOVEMENT_SPEED 1.5f
+#define MOVEMENT_SPEED 3.0f
 #define MASS 5.0f
 
-#define JUMP_FORCE (-GRAVITY_PX_PER_FRAME_SQUARED - 10.0f)
+#define JUMP_FORCE (-GRAVITY_PX_PER_FRAME_SQUARED * MASS - 10.0f)
 
 // The graphical representation of the player:
 static Game_TiledSprite sprite;
@@ -20,6 +20,13 @@ static Game_TiledSprite sprite;
 // TODO: add abstraction
 // The direction the player is looking:
 static SDL_RendererFlip facing_direction = FACE_RIGHT;
+
+// Flag tracking whether the player is moving or not,
+// used for animation:
+static bool moving = false;
+
+// Falling flag used for gravity:
+static bool falling = true;
 
 // The players transform component:
 static Transform transform = { 0 };
@@ -29,12 +36,7 @@ Game_PhysicsObject physics_object = {
     .velocity = { 0, 0 }
 };
 
-// Flag tracking whether the player is moving or not,
-// used for animation:
-static bool moving = false;
-
-// Falling flag used for gravity:
-static bool falling = true;
+Game_ColliderObject collider_object;
 
 static void SprintAnimation(void) {
     if (!moving) {
@@ -68,6 +70,10 @@ extern void Player_Init(void) {
     sprite = knight;
     transform.size.x = 1.5f * METER_FACTOR;
     transform.size.y = 1.5f * METER_FACTOR;
+
+    collider_object.bounds = &transform;
+    collider_object.id = "player";
+    Physics_RegisterCollider(&collider_object);
 }
 
 extern Transform *Player_GetTransform(void) {

@@ -7,7 +7,7 @@
 #include "../math/vector.h"
 
 #define TARGET_FPS 60.0f
-#define TARGET_FRAME_TIME (1000.0f / TARGET_FPS)
+#define TARGET_FRAME_TIME_MS (1000.0f / TARGET_FPS)
 
 #define METER_FACTOR (64)
 
@@ -83,5 +83,9 @@ extern int Game_GetAxis(Game_ControlAxis axis);
  * @return The dimensions of the window.
  */
 extern Vector2D Game_GetWindowSize(void);
+
+extern void Game_Tick(void);
+
+extern float Game_DeltaTime(void);
 
 #endif
