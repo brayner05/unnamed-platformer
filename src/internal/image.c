@@ -65,11 +65,12 @@ extern Game_TileMap *Game_GetTileMap(size_t id) {
 }
 
 extern void Game_RenderTiledImage(Game_TiledSprite *image, Transform *transform, SDL_RendererFlip flip) {
+    Game_TileMap *tilemap = Game_GetTileMap(image->tilemap);
     const SDL_Rect src_rect = {
-        .x = image->tilemap->tile_width * image->tile_x + image->padding,
-        .y = image->tilemap->tile_height * image->tile_y + image->padding,
-        .w = image->tilemap->tile_width - image->padding,
-        .h = image->tilemap->tile_height - image->padding
+        .x = tilemap->tile_width * image->tile_x + image->padding,
+        .y = tilemap->tile_height * image->tile_y + image->padding,
+        .w = tilemap->tile_width - image->padding,
+        .h = tilemap->tile_height - image->padding
     };
 
     const Transform *camera_transform = Camera_GetTransform();
@@ -81,5 +82,10 @@ extern void Game_RenderTiledImage(Game_TiledSprite *image, Transform *transform,
     };
 
     SDL_Renderer *renderer = Game_GetRenderer();
-    SDL_RenderCopyExF(renderer, image->tilemap->texture, &src_rect, &dst_rect, 0.0, NULL, flip);
+    const Game_TileMap *image_tilemap = Game_GetTileMap(image->tilemap);
+    if (image_tilemap == NULL) {
+        Game_ThrowError("INVALID TILEMAP ID");
+        return;
+    }
+    SDL_RenderCopyExF(renderer, image_tilemap->texture, &src_rect, &dst_rect, 0.0, NULL, flip);
 }

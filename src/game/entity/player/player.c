@@ -1,5 +1,4 @@
 #include "player.h"
-
 #include "../../camera.h"
 #include "../../../internal/animation.h"
 #include "../../../math/transform.h"
@@ -16,10 +15,6 @@
 
 #define JUMP_FORCE (-GRAVITY_PX_PER_FRAME_SQUARED * MASS - 10.0f)
 
-// The graphical representation of the player:
-static Game_TiledSprite sprite;
-
-// TODO: add abstraction
 // The direction the player is looking:
 static SDL_RendererFlip facing_direction = FACE_RIGHT;
 
@@ -31,7 +26,21 @@ static bool moving = false;
 static bool falling = true;
 
 // The players transform component:
-static Transform transform = { 0 };
+static Transform transform = {
+    .position = { 0, 0 },
+    .size = {
+        .x = 1.5f * METER_FACTOR,
+        .y = 1.5f * METER_FACTOR
+    }
+};
+
+// The graphical representation of the player:
+static Game_TiledSprite sprite = {
+    .tilemap = GAME_TILEMAP_KNIGHT,
+    .tile_x = 0,
+    .tile_y = 0,
+    .padding = 8
+};;
 
 Game_PhysicsObject physics_object = {
     .mass = MASS,
@@ -63,16 +72,6 @@ static void IdleAnimation(void) {
  * Initialize all dependency components.
  */
 extern void Player_Init(void) {
-    const Game_TiledSprite knight = {
-        .tilemap = Game_GetTileMap(GAME_TILEMAP_KNIGHT),
-        .tile_x = 0,
-        .tile_y = 0,
-        .padding = 8
-    };
-    sprite = knight;
-    transform.size.x = 1.5f * METER_FACTOR;
-    transform.size.y = 1.5f * METER_FACTOR;
-
     collider_object.bounds = &transform;
     collider_object.id = "player";
     Physics_RegisterCollider(&collider_object);
@@ -83,23 +82,6 @@ extern Transform *Player_GetTransform(void) {
 }
 
 extern void Player_Render(void) {
-    // true_position = camera.position + transform.position
-    /*
-     * Maybe render as follows:
-     * void Camera_Render() {
-     *      for object in scene {
-     *          if in bounds of camera {
-     *              Vector2D camera_offset = camera.position
-     *              Transform real_pos = {
-     *                  position = object.position - camera_offset
-     *                  size = object.size
-     *              }
-     *          }
-     *      }
-     * }
-     *
-     * Would have to edit the render function to accomodate this
-     */
     Game_RenderTiledImage(&sprite, &transform, facing_direction);
 }
 
@@ -143,15 +125,9 @@ extern void Player_Update(void) {
     if (Game_GetAxis(AXIS_HORIZONTAL) == 0)
         Game_PlayAnimation(IdleAnimation, ANIMATION_SPEED_MS);
 
-    // Moving right
-    if (Game_GetAxis(AXIS_HORIZONTAL) > 0) {
-        MoveRight();
-    }
-
-    // Moving left
-    if (Game_GetAxis(AXIS_HORIZONTAL) < 0) {
-        MoveLeft();
-    }
+    // Movement
+    if (Game_GetAxis(AXIS_HORIZONTAL) > 0) MoveRight();
+    if (Game_GetAxis(AXIS_HORIZONTAL) < 0) MoveLeft();
 
     // Jumping
     if (!falling && Game_GetAxis(AXIS_JUMP))

@@ -11,19 +11,19 @@ typedef struct {
     int tile_height;
 } Game_TileMap;
 
-typedef struct {
-    Game_TileMap *tilemap;
-    int tile_x;
-    int tile_y;
-    int padding;
-} Game_TiledSprite;
-
-enum {
+typedef enum {
     GAME_TILEMAP_KNIGHT         = 0,
     GAME_TILEMAP_WORLD          = 1,
     GAME_TILEMAP_SLIME_GREEN    = 2,
     GAME_TILEMAP_SLIME_PURPLE   = 3
-};
+} Game_TileMapId;
+
+typedef struct {
+    Game_TileMapId tilemap;
+    int tile_x;
+    int tile_y;
+    int padding;
+} Game_TiledSprite;
 
 /**
  * Load an image from a file.

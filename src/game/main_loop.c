@@ -6,29 +6,17 @@
 #include "../internal/internals.h"
 #include "physics/physics.h"
 
-// TEMPORARY START
-// TEMPORARY END
-
 /**
  * Poll and process SDL events whenever available.
  */
 static void ProcessEvents(void) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT)
-            Game_Quit();
-
-        if (event.type == SDL_KEYDOWN)
-            Game_KeyDownHandler(&event);
-
-        if (event.type == SDL_KEYUP)
-            Game_KeyUpHandler(&event);
-
-        if (event.type == SDL_MOUSEBUTTONDOWN)
-            Game_MouseDownHandler(&event);
-
-        if (event.type == SDL_MOUSEBUTTONUP)
-            Game_MouseUpHandler(&event);
+        if (event.type == SDL_QUIT) Game_Quit();
+        if (event.type == SDL_KEYDOWN) Game_KeyDownHandler(&event);
+        if (event.type == SDL_KEYUP) Game_KeyUpHandler(&event);
+        if (event.type == SDL_MOUSEBUTTONDOWN) Game_MouseDownHandler(&event);
+        if (event.type == SDL_MOUSEBUTTONUP) Game_MouseUpHandler(&event);
     }
 }
 
@@ -57,8 +45,9 @@ static void Render(void) {
 
     SDL_RenderClear(renderer);
     Player_Render();
+
     Game_TiledSprite sp = {
-        .tilemap = Game_GetTileMap(GAME_TILEMAP_WORLD),
+        .tilemap = GAME_TILEMAP_WORLD,
         .tile_x = 1,
         .tile_y = 0
     };
@@ -67,6 +56,7 @@ static void Render(void) {
         .size = { METER_FACTOR, METER_FACTOR }
     };
     Game_RenderTiledImage(&sp, &transform, SDL_FLIP_NONE);
+
     SDL_RenderPresent(renderer);
 }
 
