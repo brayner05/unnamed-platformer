@@ -1,9 +1,9 @@
 #include "player.h"
-#include "../../camera.h"
+#include "../../camera.hpp"
 #include "../../../internal/animation.h"
 #include "../../../math/transform.h"
-#include "../../../internal/image.h"
-#include "../../../internal/internals.h"
+#include "../../../internal/image.hpp"
+#include "../../../internal/internals.hpp"
 #include "../../../game/physics/physics.h"
 
 #define ANIMATION_SPEED_MS 100

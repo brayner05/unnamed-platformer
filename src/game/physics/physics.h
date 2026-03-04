@@ -1,7 +1,7 @@
 #ifndef UNNAMED_GAME_GRAVITY_H
 #define UNNAMED_GAME_GRAVITY_H
 #include <stdbool.h>
-#include "../../internal/internals.h"
+#include "../../internal/internals.hpp"
 #include "../../math/vector.h"
 #include "../../math/transform.h"
 

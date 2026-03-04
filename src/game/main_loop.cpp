@@ -1,9 +1,9 @@
-#include "main_loop.h"
+#include "main_loop.hpp"
 
-#include "camera.h"
-#include "../internal/image.h"
+#include "camera.hpp"
+#include "../internal/image.hpp"
 #include "./entity/player/player.h"
-#include "../internal/internals.h"
+#include "../internal/internals.hpp"
 #include "physics/physics.h"
 
 /**

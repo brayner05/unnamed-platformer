@@ -1,7 +1,7 @@
 #include <SDL2/SDL_timer.h>
 #include "animation.h"
 
-#include "internals.h"
+#include "internals.hpp"
 
 extern void Game_PlayAnimation(void (*Animation)(void), const Uint32 ms_per_frame) {
     static Uint32 time_last_frame = 0;
